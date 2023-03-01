@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
-import DropdownButton from '../../components/DropdownButton';
+import DropdownButtonQuestion from '../../components/DropdownButtonQuestion';
 import Center from '../../components/Center';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
+import EditTextButton from '../../components/EditTextButton';
 
 export default function GetSurvey() {
   const [surs, setSurs] = useState({ surveys: [] });
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,36 +30,42 @@ export default function GetSurvey() {
   return (
     <>
       <h1>Surveys</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Survey ID</th>
-            <th>Name</th>
-            <th>Questions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {surs.surveys.map((survey, i) => (
-            <tr key={survey.SurveyId}>
-              <td>{survey.SurveyId}</td>
-              <td>{survey.Name}</td>
-              <td><DropdownButton title="Questions" content={
-                survey.Questions.map((question, j) => (
-                  <><div key={question.QuestId}>{question.TheQuestion}</div><DropdownButton title="Answers" content={question.Answers.map((answer) => (
-                    answer.Truth = 1 ? (
-                      <p key={answer.AnswerId} style={{ color: 'green' }}>{answer.TheAnswer}</p>
-                    ) : (
-                      <p key={answer.AnswerId}>{answer.TheAnswer}</p>
-                    )
-                  ))} /></>
-                ))
-              }/>
+      
+      <TableContainer component={Paper}>
+        <Table sx={{minWidth:650}} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>SurveyId</TableCell>
+              <TableCell>SurveyName</TableCell>
+              <TableCell>Question</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {surs.surveys.map((survey) => (
+              <TableRow
+                key={survey.SurveyId}
+                sx={{'&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="survey">
+                  {survey.SurveyId}
+                </TableCell>
+                <TableCell align="left">
+                <EditTextButton content={survey.Name} id={survey.SurveyId}/>
+                </TableCell>
+                <TableCell>
+                
+                <DropdownButtonQuestion title="Questions" content={
+                survey.Questions} />
+                
+              
+                </TableCell>
+              </TableRow>
+            ))
 
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

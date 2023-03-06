@@ -58,7 +58,7 @@ export default function GetSurvey() {
                   {survey.SurveyId}
                 </TableCell>
                 <TableCell align="left">
-                <EditTextButton content={survey.Name} id={survey.SurveyId} table="Survey" fieldName="Name"/>
+                <EditTextButton content={survey.Name} id={survey.SurveyId} table="Survey" fieldName={"Name"}/>
                 </TableCell>
                 <TableCell>
                 

@@ -18,9 +18,15 @@ const handleInputChange = (event) => {
 
 async function handleSubmit() {
   try {
-    const data = "{ " + props.fieldName + ": " + "'" + text + "' }";
-    console.log(data);
-    const res = await createAPIEndpoint(props.table).patch(props.id, data);
+
+    let data2 = JSON.stringify({
+      Name: text,
+      SurveyId: props.id
+  })
+
+    const data = "{ " + props.fieldName + ": " + "'" + text + "', SurveyId: " + props.id + "}";
+    console.log(data2);
+    const res = await createAPIEndpoint(props.table).patch(props.id, data2);
     console.log(res.data);
     setX(x + 1);
   } catch (error) {

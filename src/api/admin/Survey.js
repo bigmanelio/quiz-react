@@ -11,11 +11,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 import EditTextButton from '../../components/EditTextButton';
+import { useNavigate } from "react-router-dom";
 
 export default function GetSurvey() {
   const [surs, setSurs] = useState({ surveys: [] });
 
-
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path = `./create`; 
+    navigate(path);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +34,10 @@ export default function GetSurvey() {
 
   return (
     <>
+    <div>
       <h1>Surveys</h1>
+      <Button onClick={routeChange}>Add Entry</Button>
+    </div>
       
       <TableContainer component={Paper}>
         <Table sx={{minWidth:650}} aria-label="simple table">
@@ -50,7 +58,7 @@ export default function GetSurvey() {
                   {survey.SurveyId}
                 </TableCell>
                 <TableCell align="left">
-                <EditTextButton content={survey.Name} id={survey.SurveyId}/>
+                <EditTextButton content={survey.Name} id={survey.SurveyId} table="Survey" fieldName={"Name"}/>
                 </TableCell>
                 <TableCell>
                 

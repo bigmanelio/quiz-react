@@ -5,6 +5,7 @@ import Login from './api/Student/Login';
 import Question from './api/admin/Question';
 import Answer from './api/admin/Answer';
 import Survey from './api/admin/Survey';
+import SurveyCreate from './api/admin/SurveyCreate';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/question" element={<Question />} />
           <Route path="/answer" element={<Answer />} />
           <Route path="/survey" element={<Survey />} />
+          <Route path="/survey/create" element={<SurveyCreate />} />
       </Routes>
     </BrowserRouter>
   );

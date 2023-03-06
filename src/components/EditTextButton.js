@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createAPIEndpoint, ENDPOINTS } from '../api';
 
 
 
@@ -7,13 +8,30 @@ import React, { useState } from 'react';
 export default function EditTextButton(props) {
 
 const [x, setX] = useState(0);
+const [text, setText] = useState('');
 
-const value={};
+const handleInputChange = (event) => {
+  setText(event.target.value);
+}
 
 
-function Update(e)
-{
-  console.log(e)
+
+async function handleSubmit() {
+  try {
+
+    let data2 = JSON.stringify({
+      Name: text,
+      SurveyId: props.id
+  })
+
+    const data = "{ " + props.fieldName + ": " + "'" + text + "', SurveyId: " + props.id + "}";
+    console.log(data2);
+    const res = await createAPIEndpoint(props.table).patch(props.id, data2);
+    console.log(res.data);
+    setX(x + 1);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 
@@ -24,14 +42,14 @@ function Update(e)
         {(x % 2 === 0)
         ? props.content 
         :         
-        <form onSubmit={Update}>
+        <>
           <TextField
           required
           label="Update"
-          onSubmit={ (e) => Update(e)}
+          onChange={handleInputChange}
           defaultValue={props.content}/>
-          <Button type="submit">Submit</Button>
-        </form>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </>
 
       }
         

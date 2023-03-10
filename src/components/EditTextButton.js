@@ -9,7 +9,6 @@ export default function EditTextButton(props) {
 
 const [x, setX] = useState(0);
 const [text, setText] = useState('');
-
 const handleInputChange = (event) => {
   setText(event.target.value);
 }
@@ -19,15 +18,16 @@ const handleInputChange = (event) => {
 async function handleSubmit() {
   try {
 
-    let data2 = JSON.stringify({
-      Name: text,
-      SurveyId: props.id
-  })
+   var data = (JSON.stringify({
+      Id: props.id,
+      Data: text
 
-    const data = "{ " + props.fieldName + ": " + "'" + text + "', SurveyId: " + props.id + "}";
-    console.log(data2);
-    const res = await createAPIEndpoint(props.table).patch(props.id, data2);
+    }));
+
+    console.log(data);
+    const res = await createAPIEndpoint(props.table).patch(props.id, data);
     console.log(res.data);
+    props.updateThing(props.id, text);
     setX(x + 1);
   } catch (error) {
     console.log(error);
@@ -49,6 +49,8 @@ async function handleSubmit() {
           onChange={handleInputChange}
           defaultValue={props.content}/>
           <Button onClick={handleSubmit}>Submit</Button>
+
+          
         </>
 
       }

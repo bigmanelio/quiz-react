@@ -7,10 +7,23 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DropdownButton from './DropdownButtonAnswer';
+import EditTextButton from './EditTextButton';
 import Button from '@mui/material/Button'
+import AddQuestionButton from "./AddObjectButton"
 
 function DropdownButtonQuestion(props) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+function UpdateQuestion( id, question)
+{
+  props.updateThing(props.SurveyId, id, question);
+};
+function UpdateAnswer( QuestId, id, answer)
+{
+  props.updateThing2(props.SurveyId, QuestId, id, answer);
+};
+
+
 
   const handleButtonClick = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -37,12 +50,17 @@ function DropdownButtonQuestion(props) {
                 key={thing.QuestId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{thing.TheQuestion}</TableCell>
+                <TableCell><EditTextButton  updateThing={UpdateQuestion} content={thing.TheQuestion} table={"Question"} fieldName={"TheQuestion"} id={thing.QuestId}/></TableCell>
                 
-                <TableCell><DropdownButton title="Answers" content={thing.Answers}/></TableCell>
-
+                <TableCell><DropdownButton updateThing={UpdateAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
+                
               </TableRow>
+
             ))}
+
+            <AddQuestionButton table={"question"} id={props.SurveyId}/>
+
+
           </TableBody>
         </Table>
       </TableContainer>

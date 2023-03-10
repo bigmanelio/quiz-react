@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import EditTextButton from './EditTextButton';
 
 
 function DropdownButton(props) {
@@ -15,6 +16,11 @@ function DropdownButton(props) {
   const handleButtonClick = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
+
+function UpdateAnswer(id, answer)
+{
+  props.updateThing(props.QuestId, id, answer);
+}
 
   return (
     <>
@@ -37,7 +43,7 @@ function DropdownButton(props) {
                 key={thing.AnswerId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell>{thing.TheAnswer}</TableCell>
+                <TableCell><EditTextButton  updateThing={UpdateAnswer} content={thing.TheAnswer} table={"Answer"} fieldName={"TheAnswer"} id={thing.AnswerId}/></TableCell>
               </TableRow>
             ))}
           </TableBody>

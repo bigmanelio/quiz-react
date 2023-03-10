@@ -32,11 +32,98 @@ export default function GetSurvey() {
     fetchData();
   }, []);
 
+function UpdateSurvey(SurveyId, name)
+{
+    const mySurvey = [...surs.surveys];
+    const TheSurvey = mySurvey.find(
+      a => a.SurveyId === SurveyId
+    );
+
+    TheSurvey.Name = name;
+    setSurs({surveys: mySurvey})
+    
+}
+
+function UpdateQuestion(SurveyId, QuestId, question)
+{
+  console.log(SurveyId, QuestId, question)
+    const mySurvey = [...surs.surveys];
+    const TheSurvey = mySurvey.find(
+      a => a.SurveyId === SurveyId
+    );
+    const Questions = TheSurvey.Questions;
+    
+    const TheQuestion = Questions.find(
+      a => a.QuestId === QuestId
+    );
+    TheQuestion.TheQuestion = question;
+
+    setSurs(prevState => {
+      const updatedSurveyIndex = prevState.surveys.findIndex(survey => survey.SurveyId === SurveyId);
+      const updatedSurvey = { ...prevState.surveys[updatedSurveyIndex], Questions };
+      const updatedSurveys = [...prevState.surveys];
+      updatedSurveys[updatedSurveyIndex] = updatedSurvey;
+      return { surveys: updatedSurveys };
+    });
+    
+}
+
+function UpdateAnswer(SurveyId, QuestId, id, answer)
+{
+  console.log(SurveyId, QuestId, id, answer)
+
+  const mySurvey = [...surs.surveys];
+  const TheSurvey = mySurvey.find(
+    a => a.SurveyId === SurveyId
+  );
+  const Questions = TheSurvey.Questions;
+  
+  const TheQuestion = Questions.find(
+    a => a.QuestId === QuestId
+  );
+  
+  const Answers = TheQuestion.Answers;
+
+  const TheAnswer = Answers.find(
+    a => a.AnswerId === id
+  );
+
+  TheAnswer.TheAnswer = answer;
+
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.map(survey => {
+      if (survey.SurveyId === SurveyId) {
+        const updatedQuestions = survey.Questions.map(question => {
+          if (question.QuestId === QuestId) {
+            const updatedAnswers = question.Answers.map(answerItem => {
+              if (answerItem.AnswerId === id) {
+                return { ...answerItem, TheAnswer: answer };
+              }
+              return answerItem;
+            });
+            return { ...question, Answers: updatedAnswers };
+          }
+          return question;
+        });
+        return { ...survey, Questions: updatedQuestions };
+      }
+      return survey;
+    });
+    return { surveys: updatedSurveys };
+  });
+}
+
+  
+
+
+
+
+  
   return (
     <>
     <div>
       <h1>Surveys</h1>
-      <Button onClick={routeChange}>Add Entry</Button>
+      <Button>Add Entry</Button>
     </div>
       
       <TableContainer component={Paper}>
@@ -58,11 +145,11 @@ export default function GetSurvey() {
                   {survey.SurveyId}
                 </TableCell>
                 <TableCell align="left">
-                <EditTextButton content={survey.Name} id={survey.SurveyId} table="Survey" fieldName={"Name"}/>
+                <EditTextButton updateThing={UpdateSurvey} content={survey.Name} id={survey.SurveyId} table={"Survey"} fieldName={"Name"}/>
                 </TableCell>
                 <TableCell>
                 
-                <DropdownButtonQuestion title="Questions" content={
+                <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} updateThing={UpdateQuestion} updateThing2={UpdateAnswer} content={
                 survey.Questions} />
                 
               

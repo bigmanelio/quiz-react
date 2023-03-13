@@ -4,7 +4,7 @@ import { createAPIEndpoint, ENDPOINTS } from '../api';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-function AddQuestionButton(props) {
+function AddAnswerButton(props) {
   const [showCode, setShowCode] = useState(false);
   const [text, setText] = useState('');
 
@@ -28,8 +28,9 @@ function AddQuestionButton(props) {
   
       console.log(data);
       const res = await createAPIEndpoint(props.table).post(data);
-      console.log(res.data);
-      props.updateThing(props.id, text);
+      const stuff = JSON.parse(res.data);
+      props.updateThing(stuff.AnswerId, stuff.TheAnswer);
+      handleButtonClick();
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +50,7 @@ function AddQuestionButton(props) {
       )}
       <TableRow>
         <TableCell>
-            <Button onClick={handleButtonClick}>Add Question</Button>
+            <Button onClick={handleButtonClick}>Add Answer</Button>
         </TableCell>
         <TableCell></TableCell>
       </TableRow>
@@ -57,4 +58,4 @@ function AddQuestionButton(props) {
     </>
   );
 }
-export default AddQuestionButton;
+export default AddAnswerButton;

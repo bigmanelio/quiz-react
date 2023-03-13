@@ -2,13 +2,19 @@ import React from 'react'
 import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import Center from '../../components/Center'
 import useForm from '../../hooks/useForm'
+import { createAPIEndpoint, ENDPOINTS } from '../../api';
+import { useNavigate } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
+
 
 const getFreshModel= ()=>({
     email: '',
+    firstName: '',
+    lastName: '',
     password: ''
 })
 
-export default function Login() {
+export default function SignUp() {
 
     const {
         values,
@@ -18,18 +24,37 @@ export default function Login() {
         handleInputChange
     } = useForm(getFreshModel);
 
-    const Login = e => {
+    const SignUp = async e => {
         e.preventDefault();
         if (validate()){
-            console.log(values);
-        }
+    
+            var stuff = (JSON.stringify({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                pass: values.password
+    
+            }));
+            console.log(stuff);
+            let res = null;
+            try {
+                
+                res = await createAPIEndpoint(ENDPOINTS.Register).post(stuff)
+                console.log(res);
+            } catch (error) {
+                console.error(error);
+            }
+    
 
+        }
     }
 
     const validate = ()=>{
         let temp ={}
+        temp.firstName = values.firstName!=""?"":"This field is required."
+        temp.lastName = values.lastName!=""?"":"This field is required."
         temp.email = (/\S+@\S+\.\S+/).test(values.email)?"":"Email is not valid."
-        temp.password = values.name!=""?"":"This field is required."
+        temp.password = values.password!=""?"":"This field is required."
         setErrors(temp)
         return Object.values(temp).every(x=> x == "")
     }
@@ -47,7 +72,21 @@ export default function Login() {
                         width: '90%'
                     }
                     }}>
-                        <form noValidate onSubmit={Login}>
+                        <form noValidate onSubmit={SignUp}>
+                            <TextField
+                            label="First Name"
+                            name="firstName"
+                            value={values.firstName}
+                            onChange={handleInputChange}
+                            varient="outlined" 
+                            {...(errors.firstName &&{error:true, helperText:errors.firstName})}/>
+                            <TextField
+                            label="Last Name"
+                            name="lastName"
+                            value={values.lastName}
+                            onChange={handleInputChange}
+                            varient="outlined" 
+                            {...(errors.lastName &&{error:true, helperText:errors.lastName})}/>
                             <TextField
                             label="Email"
                             name="email"
@@ -62,7 +101,7 @@ export default function Login() {
                             value={values.password}
                             onChange={handleInputChange}
                             variant="outlined" 
-                            {...(errors.name &&{error:true, helperText:errors.password})}/>
+                            {...(errors.password &&{error:true, helperText:errors.password})}/>
                             <Button
                             type="submit"
                             variant="contained"

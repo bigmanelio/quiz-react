@@ -12,8 +12,9 @@ import Paper from '@mui/material/Paper';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 import EditTextButton from '../../components/EditTextButton';
 import { useNavigate } from "react-router-dom";
+import withAuthorization from "../Authentication/withAuthorization";
 
-export default function GetSurvey() {
+export default withAuthorization('Admin')(function GetSurvey() {
   const [surs, setSurs] = useState({ surveys: [] });
 
   let navigate = useNavigate(); 
@@ -68,6 +69,8 @@ function UpdateQuestion(SurveyId, QuestId, question)
     
 }
 
+
+
 function UpdateAnswer(SurveyId, QuestId, id, answer)
 {
   console.log(SurveyId, QuestId, id, answer)
@@ -113,15 +116,42 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
   });
 }
 
+function AddQuestion(SurveyId, QuestId, id, question, answer)
+{
+  console.log(SurveyId, QuestId, id, question, answer)
+
+  const newQuestion = {
+    QuestId: QuestId,
+    TheQuestion: question,
+    Answers: [
+      {
+        AnswerId: id,
+        TheAnswer: answer,
+      },
+
+    ]
+  };
+
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.map(survey => {
+      if (survey.SurveyId === SurveyId) {
+        const updatedQuestions = [...survey.Questions, newQuestion];
+        return { ...survey, Questions: updatedQuestions };
+      }
+      return survey;
+    });
+    return { surveys: updatedSurveys };
+  });
+}
   
 
 
 
 
-  
   return (
     <>
     <div>
+      <h1>current user: {localStorage.getItem('name')}</h1>
       <h1>Surveys</h1>
       <Button>Add Entry</Button>
     </div>
@@ -149,7 +179,7 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
                 </TableCell>
                 <TableCell>
                 
-                <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} updateThing={UpdateQuestion} updateThing2={UpdateAnswer} content={
+                <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} updateThing={UpdateQuestion} updateThing2={UpdateAnswer} AddQuestion={AddQuestion} content={
                 survey.Questions} />
                 
               
@@ -163,4 +193,6 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
       </TableContainer>
     </>
   );
-}
+    
+  
+})

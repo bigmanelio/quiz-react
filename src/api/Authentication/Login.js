@@ -4,6 +4,8 @@ import Center from '../../components/Center'
 import useForm from '../../hooks/useForm'
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 import { useNavigate } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
+
 
 const getFreshModel= ()=>({
     email: '',
@@ -13,10 +15,16 @@ const getFreshModel= ()=>({
 export default function Login() {
 
     let navigate = useNavigate(); 
-    const routeChange = () =>{ 
+    const routeChangeSignUp = () =>{ 
       let path = `./signup`; 
       navigate(path);
     }
+    const routeChangeAdmin = () =>{ 
+        let path = `./admin`; 
+        navigate(path);
+      }
+
+    
 
     const {
         values,
@@ -29,22 +37,38 @@ export default function Login() {
     const Login = async e => {
         e.preventDefault();
         if (validate()){
-
+    
             var stuff = (JSON.stringify({
                 email: values.email,
                 password: values.password
-
+    
             }));
             console.log(stuff);
-            const res = await createAPIEndpoint(ENDPOINTS.Login).post(stuff)
-            .then(res.json())
-            .then(data => {
-                localStorage.setItem('token', data.token);
-            })
-            .catch(error => console.error(error));
-        }
+            let res = null;
+            try {
+                
+                res = await createAPIEndpoint(ENDPOINTS.Login).post(stuff)
+                localStorage.setItem('token' , res.data.token);
+                localStorage.setItem('role', res.data.role); 
+                localStorage.setItem('name', res.data.name);
+                const token = localStorage.getItem('token');
 
+
+
+const decoded = jwtDecode(token);
+
+console.log(decoded);
+                
+                routeChangeAdmin();
+            } catch (error) {
+                console.error(error);
+            }
+    
+
+        }
     }
+
+    
 
     const validate = ()=>{
         let temp ={}
@@ -90,7 +114,7 @@ export default function Login() {
                             sx={{ width: '90%'}}>Login</Button>
                     </form>
                     <Button
-                            onClick={routeChange}
+                            onClick={routeChangeSignUp}
                             type="submit"
                             variant="contained"
                             size="large" 

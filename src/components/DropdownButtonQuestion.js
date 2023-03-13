@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import DropdownButton from './DropdownButtonAnswer';
 import EditTextButton from './EditTextButton';
 import Button from '@mui/material/Button'
-import AddQuestionButton from "./AddObjectButton"
+import AddQuestionButton from "./AddQuestionButton"
 
 function DropdownButtonQuestion(props) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -21,6 +21,11 @@ function UpdateQuestion( id, question)
 function UpdateAnswer( QuestId, id, answer)
 {
   props.updateThing2(props.SurveyId, QuestId, id, answer);
+};
+
+function AddQuestion(QuestId, id, question, answer)
+{
+  props.AddQuestion(props.SurveyId, QuestId, id, question, answer);
 };
 
 
@@ -58,7 +63,7 @@ function UpdateAnswer( QuestId, id, answer)
 
             ))}
 
-            <AddQuestionButton table={"question"} id={props.SurveyId}/>
+            <AddQuestionButton updateThing={AddQuestion} table={"question"} id={props.SurveyId}/>
 
 
           </TableBody>

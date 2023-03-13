@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import EditTextButton from './EditTextButton';
+import AddAnswerButton from './AddAnswerButton';
 
 
 function DropdownButton(props) {
@@ -18,6 +19,11 @@ function DropdownButton(props) {
   };
 
 function UpdateAnswer(id, answer)
+{
+  props.updateThing(props.QuestId, id, answer);
+}
+
+function AddAnswer(id, answer)
 {
   props.updateThing(props.QuestId, id, answer);
 }
@@ -46,6 +52,9 @@ function UpdateAnswer(id, answer)
                 <TableCell><EditTextButton  updateThing={UpdateAnswer} content={thing.TheAnswer} table={"Answer"} fieldName={"TheAnswer"} id={thing.AnswerId}/></TableCell>
               </TableRow>
             ))}
+
+            <AddAnswerButton updateThing={AddAnswer} table={"answer"} id={props.QuestId} />
+
           </TableBody>
         </Table>
       </TableContainer>

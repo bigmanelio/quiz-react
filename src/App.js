@@ -6,6 +6,7 @@ import Signup from './api/Authentication/Signup';
 import Question from './api/admin/Question';
 import Answer from './api/admin/Answer';
 import Survey from './api/admin/Survey';
+import AdminHome from './api/admin/AdminHome';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/question" element={<Question />} />
           <Route path="/answer" element={<Answer />} />
           <Route path="/survey" element={<Survey />} />
+          <Route path="/admin" element={<AdminHome />} />
           <Route path="/signup" element={<Signup />} />
            
       </Routes>

@@ -1,7 +1,13 @@
-import React from 'react'
+import React from 'react';
+import AdminNav from '../../components/AdminNav';
+import Center from '../../components/Center';
 
 export default function AdminHome() {
   return (
-    <a href="./survey" >Survey Edit</a>
+    <>
+    <AdminNav/>
+    <Center>Welcome Admin!!</Center>
+
+    </>
   )
 }

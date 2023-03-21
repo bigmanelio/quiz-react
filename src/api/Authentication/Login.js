@@ -23,6 +23,10 @@ export default function Login() {
         let path = `./admin`; 
         navigate(path);
       }
+      const routeChangeStudent = () =>{ 
+        let path = `./student`; 
+        navigate(path);
+      }
 
     
 
@@ -49,7 +53,12 @@ export default function Login() {
                 
                 res = await createAPIEndpoint(ENDPOINTS.Login).post(stuff)
                 localStorage.setItem('token' , res.data.token);
-                localStorage.setItem('role', res.data.role); 
+                
+                if (res.data.role == "Admin")
+                {
+                    localStorage.setItem('role', res.data.role);
+                }
+ 
                 localStorage.setItem('name', res.data.name);
                 const token = localStorage.getItem('token');
 
@@ -59,7 +68,8 @@ const decoded = jwtDecode(token);
 
 console.log(decoded);
                 
-                routeChangeAdmin();
+                if(res.data.role == "Admin"){routeChangeAdmin();}
+                else{routeChangeStudent();}
             } catch (error) {
                 console.error(error);
             }

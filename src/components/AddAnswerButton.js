@@ -20,8 +20,9 @@ function AddAnswerButton(props) {
     try {
   
      var data = (JSON.stringify({
-        Id: props.id,
-        Data: text
+        id: props.id,
+        data: text,
+        truth: 1
 
   
       }));
@@ -29,7 +30,7 @@ function AddAnswerButton(props) {
       console.log(data);
       const res = await createAPIEndpoint(props.table).post(data);
       const stuff = JSON.parse(res.data);
-      props.updateThing(stuff.AnswerId, stuff.TheAnswer);
+      props.addAnswer(stuff.childId, text, 1);
       handleButtonClick();
     } catch (error) {
       console.log(error);

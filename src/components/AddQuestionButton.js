@@ -28,8 +28,9 @@ function AddQuestionButton(props) {
   
       console.log(data);
       const res = await createAPIEndpoint(props.table).post(data);
-      console.log(res.data);
-      props.updateThing(props.id, text);
+      const stuff = JSON.parse(res.data);
+      props.updateThing(stuff.parentId, stuff.childId, text, 'Edit Default Answer');
+      handleButtonClick();
     } catch (error) {
       console.log(error);
     }

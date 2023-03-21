@@ -6,8 +6,13 @@ export const ENDPOINTS = {
     answer: 'answer',
     question: 'question',
     survey: 'survey',
+    user: 'user',
+    
+    truth: 'answer/truth',
     Login: 'User/login',
-    Register: 'User/Register'
+    Register: 'User/Register',
+    Assign: 'User/Assign',
+
 
 }
 export const createAPIEndpoint = endpoint => {

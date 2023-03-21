@@ -12,8 +12,13 @@ import Paper from '@mui/material/Paper';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 import EditTextButton from '../../components/EditTextButton';
 import { useNavigate } from "react-router-dom";
+import withAuthorization from "../Authentication/withAuthorization";
+import DeleteButton from "../../components/DeleteButton";
+import AdminNav from "../../components/AdminNav";
 
-export default function GetSurvey() {
+
+
+export default withAuthorization('Admin')(function GetSurvey() {
   const [surs, setSurs] = useState({ surveys: [] });
 
   let navigate = useNavigate(); 
@@ -32,6 +37,46 @@ export default function GetSurvey() {
     fetchData();
   }, []);
 
+  function AddSurvey(SurveyId, Name, questions)
+  {
+    const newSurvey = {
+      SurveyId: SurveyId,
+      Name: Name,
+      Questions: questions,
+    };
+    setSurs(prevState => {
+      const updatedSurveys = [newSurvey, ...prevState.surveys];
+      return { surveys: updatedSurveys};
+    });
+  }
+  
+  async function newSurvey()
+  {
+    try {
+       const res = await createAPIEndpoint(ENDPOINTS.survey).post();
+       const stuff = JSON.parse(res.data);
+       console.log(stuff);
+       const questions = [
+        {
+        QuestId: stuff.QuestId,
+        TheQuestion: stuff.TheQuestion,
+        Answers: [
+          {
+            AnswerId: stuff.AnswerId,
+            TheAnswer: stuff.TheAnswer,
+            truth: stuff.Truth,
+          },
+    
+        ]
+      }
+       ];
+       AddSurvey(stuff.SurveyId, stuff.Name, questions);
+  
+     } catch (error) {
+       console.log(error);
+     }
+  }
+
 function UpdateSurvey(SurveyId, name)
 {
     const mySurvey = [...surs.surveys];
@@ -42,6 +87,26 @@ function UpdateSurvey(SurveyId, name)
     TheSurvey.Name = name;
     setSurs({surveys: mySurvey})
     
+}
+
+function DeleteSurvey(SurveyId) {
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.filter(survey => survey.SurveyId !== SurveyId);
+    return { surveys: updatedSurveys };
+  });
+}
+
+function DeleteQuestion(SurveyId, QuestId) {
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.map(survey => {
+      if (survey.SurveyId === SurveyId) {
+        const updatedQuestions = survey.Questions.filter(question => question.QuestId !== QuestId);
+        return { ...survey, Questions: updatedQuestions };
+      }
+      return survey;
+    });
+    return { surveys: updatedSurveys };
+  });
 }
 
 function UpdateQuestion(SurveyId, QuestId, question)
@@ -68,9 +133,28 @@ function UpdateQuestion(SurveyId, QuestId, question)
     
 }
 
-function UpdateAnswer(SurveyId, QuestId, id, answer)
+function DeleteAnswer(SurveyId, QuestId, id) {
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.map(survey => {
+      if (survey.SurveyId === SurveyId) {
+        const updatedQuestions = survey.Questions.map(question => {
+          if (question.QuestId === QuestId) {
+            const updatedAnswers = question.Answers.filter(answerItem => answerItem.AnswerId !== id);
+            return { ...question, Answers: updatedAnswers };
+          }
+          return question;
+        });
+        return { ...survey, Questions: updatedQuestions };
+      }
+      return survey;
+    });
+    return { surveys: updatedSurveys };
+  });
+}
+
+function UpdateAnswer(SurveyId, QuestId, id, answer, truth)
 {
-  console.log(SurveyId, QuestId, id, answer)
+  console.log(SurveyId, QuestId, id, answer, truth)
 
   const mySurvey = [...surs.surveys];
   const TheSurvey = mySurvey.find(
@@ -89,6 +173,12 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
   );
 
   TheAnswer.TheAnswer = answer;
+
+  if(truth != null)
+  {
+    TheAnswer.truth = truth;
+  }
+
 
   setSurs(prevState => {
     const updatedSurveys = prevState.surveys.map(survey => {
@@ -113,17 +203,79 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
   });
 }
 
+
+
+function AddQuestion(SurveyId, QuestId, id, question, answer)
+{
+  console.log(SurveyId, QuestId, id, question, answer)
+
+  const newQuestion = {
+    QuestId: QuestId,
+    TheQuestion: question,
+    Answers: [
+      {
+        AnswerId: id,
+        TheAnswer: answer,
+      },
+
+    ]
+  };
+  setSurs(prevState => {
+    const updatedSurveys = prevState.surveys.map(survey => {
+      if (survey.SurveyId === SurveyId) {
+        const updatedQuestions = [...survey.Questions, newQuestion];
+        return { ...survey, Questions: updatedQuestions };
+      }
+      return survey;
+    });
+    return { surveys: updatedSurveys };
+  });
+}
+
+function AddAnswer(SurveyId, QuestId, id, answer, truth)
+{
+    console.log(SurveyId, QuestId, id, answer, truth)
+  
+    try {
+    const newAnswer = {
+      AnswerId: id,
+      TheAnswer: answer,
+    };
+  
+
+    setSurs(prevState => {
+      const updatedSurveys = prevState.surveys.map(survey => {
+        if (survey.SurveyId === SurveyId) {
+          const updatedQuestions = survey.Questions.map(question => {
+            if (question.QuestId === QuestId) {
+              const updatedAnswers = [...question.Answers, newAnswer]
+              return { ...question, Answers: updatedAnswers };
+            }
+            return question;
+          });
+          return { ...survey, Questions: updatedQuestions };
+        }
+        return survey;
+      });
+      return { surveys: updatedSurveys };
+    });
+}
+catch (error) {
+  console.log(error);
+}
+}
   
 
 
 
 
-  
   return (
     <>
     <div>
+      <AdminNav/>
+      <h1>current user: {localStorage.getItem('name')}</h1>
       <h1>Surveys</h1>
-      <Button>Add Entry</Button>
+      <Button onClick={newSurvey}>Add Entry</Button>
     </div>
       
       <TableContainer component={Paper}>
@@ -133,6 +285,7 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
               <TableCell>SurveyId</TableCell>
               <TableCell>SurveyName</TableCell>
               <TableCell>Question</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -149,10 +302,13 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
                 </TableCell>
                 <TableCell>
                 
-                <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} updateThing={UpdateQuestion} updateThing2={UpdateAnswer} content={
+                <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} deleteQuestion={DeleteQuestion} deleteAnswer={DeleteAnswer} updateThing={UpdateQuestion} updateTruth={UpdateAnswer} updateThing2={UpdateAnswer} AddQuestion={AddQuestion} addAnswer={AddAnswer} content={
                 survey.Questions} />
                 
               
+                </TableCell>
+                <TableCell>
+                  <DeleteButton id={survey.SurveyId} updateThing={DeleteSurvey} table={'survey'}/>
                 </TableCell>
               </TableRow>
             ))
@@ -163,4 +319,6 @@ function UpdateAnswer(SurveyId, QuestId, id, answer)
       </TableContainer>
     </>
   );
-}
+    
+  
+})

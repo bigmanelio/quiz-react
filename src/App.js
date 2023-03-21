@@ -6,6 +6,10 @@ import Signup from './api/Authentication/Signup';
 import Question from './api/admin/Question';
 import Answer from './api/admin/Answer';
 import Survey from './api/admin/Survey';
+import AdminHome from './api/admin/AdminHome';
+import StudentHome from './api/Student/StudentHome';
+import TakeSurvey from './api/Student/TakeSurvey';
+import Assign from './api/admin/Assign';
 
 function App() {
   return (
@@ -15,7 +19,11 @@ function App() {
           <Route path="/result" element={<Login />} />
           <Route path="/question" element={<Question />} />
           <Route path="/answer" element={<Answer />} />
-          <Route path="/survey" element={<Survey />} />
+          <Route path="admin/survey" element={<Survey />} />
+          <Route path="admin/assign" element={<Assign />} />
+          <Route path="/admin" element={<AdminHome />} />
+          <Route path="/student" element={<StudentHome/>} />
+          <Route path="/student/takesurvey" element={<TakeSurvey/>} />
           <Route path="/signup" element={<Signup />} />
            
       </Routes>

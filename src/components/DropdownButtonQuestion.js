@@ -8,8 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DropdownButton from './DropdownButtonAnswer';
 import EditTextButton from './EditTextButton';
-import Button from '@mui/material/Button'
-import AddQuestionButton from "./AddObjectButton"
+import Button from '@mui/material/Button';
+import AddQuestionButton from "./AddQuestionButton";
+import DeleteButton from "./DeleteButton";
 
 function DropdownButtonQuestion(props) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -18,9 +19,35 @@ function UpdateQuestion( id, question)
 {
   props.updateThing(props.SurveyId, id, question);
 };
+
+function DeleteQuestion(id)
+{
+  props.deleteQuestion(props.SurveyId, id)
+}
 function UpdateAnswer( QuestId, id, answer)
 {
   props.updateThing2(props.SurveyId, QuestId, id, answer);
+};
+
+function UpdateTruth( QuestId, id, answer, truth)
+{
+  props.updateTruth(props.SurveyId, QuestId, id, answer, truth);
+};
+
+function DeleteAnswer(QuestId, id)
+{
+  props.deleteAnswer(props.SurveyId, QuestId, id);
+}
+
+
+function AddQuestion(QuestId, id, question, answer)
+{
+  props.AddQuestion(props.SurveyId, QuestId, id, question, answer);
+};
+
+function AddAnswer(QuestId, id, answer, truth)
+{
+  props.addAnswer(props.SurveyId, QuestId, id, answer, truth);
 };
 
 
@@ -52,13 +79,14 @@ function UpdateAnswer( QuestId, id, answer)
               >
                 <TableCell><EditTextButton  updateThing={UpdateQuestion} content={thing.TheQuestion} table={"Question"} fieldName={"TheQuestion"} id={thing.QuestId}/></TableCell>
                 
-                <TableCell><DropdownButton updateThing={UpdateAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
+                <TableCell><DropdownButton deleteAnswer={DeleteAnswer} updateThing={UpdateAnswer} updateTruth={UpdateTruth} addAnswer={AddAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
                 
+                <TableCell><DeleteButton table={'question'} id={thing.QuestId} updateThing={DeleteQuestion}/></TableCell>
               </TableRow>
 
             ))}
 
-            <AddQuestionButton table={"question"} id={props.SurveyId}/>
+            <AddQuestionButton updateThing={AddQuestion} table={"question"} id={props.SurveyId}/>
 
 
           </TableBody>

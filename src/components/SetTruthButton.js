@@ -1,6 +1,6 @@
 import { Button, TextField, Switch} from '@mui/material';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import ClearIcon from '@mui/icons-material/Clear';
+//import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+//import ClearIcon from '@mui/icons-material/Clear';
 import React, { useState, useEffect } from 'react';
 import { createAPIEndpoint, ENDPOINTS } from '../api';
 
@@ -26,10 +26,10 @@ const switchHandler = (event) => {
 function Icon()
 {
   if (truthIcon == 1) {
-    return(<DoneOutlineIcon/>)
+    return(" true")
   }
   else{
-    return(<><ClearIcon/></>)
+    return(<> false</>)
   }
 }
 

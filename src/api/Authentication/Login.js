@@ -54,12 +54,16 @@ export default function Login() {
                 res = await createAPIEndpoint(ENDPOINTS.Login).post(stuff)
                 localStorage.setItem('token' , res.data.token);
                 
-                if (res.data.role == "Admin")
+                if (res.data.role === "Admin")
                 {
                     localStorage.setItem('role', res.data.role);
                 }
+                else (
+                    localStorage.setItem('role', '')
+                )
  
                 localStorage.setItem('name', res.data.name);
+                localStorage.setItem('id', res.data.id)
                 const token = localStorage.getItem('token');
 
 
@@ -68,7 +72,7 @@ const decoded = jwtDecode(token);
 
 console.log(decoded);
                 
-                if(res.data.role == "Admin"){routeChangeAdmin();}
+                if(res.data.role === "Admin"){routeChangeAdmin();}
                 else{routeChangeStudent();}
             } catch (error) {
                 console.error(error);
@@ -83,9 +87,9 @@ console.log(decoded);
     const validate = ()=>{
         let temp ={}
         temp.email = (/\S+@\S+\.\S+/).test(values.email)?"":"Email is not valid."
-        temp.password = values.name!=""?"":"This field is required."
+        temp.password = values.name!==""?"":"This field is required."
         setErrors(temp)
-        return Object.values(temp).every(x=> x == "")
+        return Object.values(temp).every(x=> x === "")
     }
 
     return ( 

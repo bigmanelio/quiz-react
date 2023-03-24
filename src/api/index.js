@@ -13,6 +13,7 @@ export const ENDPOINTS = {
     Register: 'User/Register',
     Assign: 'User/Assign',
     Unassign: 'User/Unassign',
+    Response: 'Response',
 
 
 }

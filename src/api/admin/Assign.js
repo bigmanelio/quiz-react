@@ -16,6 +16,7 @@ import withAuthorization from "../Authentication/withAuthorization";
 import DeleteButton from "../../components/DeleteButton";
 import AdminNav from "../../components/AdminNav";
 import AssignButton from './AssignButton';
+import UnassignButton from './UnassignButton';
 
 export default function Assign() {
   const [students, setStudents] = useState([]);
@@ -37,21 +38,42 @@ export default function Assign() {
     getUsers();
   }, []);
 
-  function AssignedWork(ids) {
+  function Unassign(AccountId, SurveyId) {
+    const myStudents = [...students];
+    const TheStudent = myStudents.find(a => a.AccountId === AccountId);
+  
+    TheStudent.AssignedWork = TheStudent.AssignedWork.filter(item => item !== SurveyId);
+    setStudents(myStudents);
+  }
+
+  function AssignedWork(ids, accountId) {
     if (Array.isArray(ids)) {
       const foundSurveys = ids.map((surveyId) =>
         surveys.filter((survey) => survey.SurveyId === surveyId)
       );
       return foundSurveys.map((surveyArray) =>
-        surveyArray.map((survey) => <p key={survey.SurveyId}>{survey.Name}</p>)
+        surveyArray.map((survey) =>  <p key={survey.SurveyId}>{survey.Name} <UnassignButton accountId={accountId} unassign={Unassign} surveyId={survey.SurveyId} /></p> )
       );
     } else {
       const foundSurveys = surveys.filter((survey) => survey.SurveyId === ids);
       if (foundSurveys.length > 0) {
-        return foundSurveys.map((survey) => <p key={survey.SurveyId}>{survey.Name}</p>);
+        return foundSurveys.map((survey) => <> <p key={survey.SurveyId}>{survey.Name}</p> <DeleteButton/></>);
       }
       return null;
     }
+  }
+
+  function AssignStudent(AccountId, SurveyId)
+  {
+    const myStudents = [...students];
+    const TheStudent = myStudents.find(
+      a => a.AccountId === AccountId
+    );
+
+    TheStudent.AssignedWork.push(SurveyId);
+
+    console.log(TheStudent);
+    setStudents(myStudents);
   }
 
   return (
@@ -73,8 +95,8 @@ export default function Assign() {
                 <TableRow key={student.AccountId}>
                   <TableCell>{student.AccountId}</TableCell>
                   <TableCell>{student.FirstName + " " + student.LastName}</TableCell>
-                  <TableCell>{AssignedWork(student.AssignedWork)}</TableCell>
-                  <TableCell><AssignButton student={student} surveys={surveys}/></TableCell>
+                  <TableCell>{AssignedWork(student.AssignedWork, student.AccountId)}</TableCell>
+                  <TableCell><AssignButton student={student} assignStudent={AssignStudent} surveys={surveys}/></TableCell>
                 </TableRow>
               ))}
             </TableBody>

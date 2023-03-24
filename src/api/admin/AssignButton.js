@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import DeleteButton from '../../components/DeleteButton';
 
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 
@@ -38,6 +39,7 @@ async function handleSubmit(accountId, surveyId) {
      console.log(data);
      const res = await createAPIEndpoint(ENDPOINTS.Assign).post(data);
      console.log(res.data);
+     props.assignStudent(accountId, surveyId)
    } catch (error) {
      console.log(error);
    }

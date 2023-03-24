@@ -1,73 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material'
-import DropdownButtonQuestion from '../../components/DropdownButtonQuestion';
-import Center from '../../components/Center';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
-import EditTextButton from '../../components/EditTextButton';
-import { useNavigate } from "react-router-dom";
-import withAuthorization from "../Authentication/withAuthorization";
-import DeleteButton from "../../components/DeleteButton";
-import AdminNav from "../../components/AdminNav";
-import TakeQuestion from './TakeQuestion';
-
+import Center from '../../components/Center';
 
 export default function TakeSurvey() {
+  const [qns, setQns] = useState([]);
+  const [qnIndex, setQnIndex] = useState(0);
+  const [sur, setSur] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState('');
 
-
-const [qns, setQns] = useState([]);
-const [qnIndex, setQnIndex] = useState(0);
-const [sur, setSur] = useState('');
-
-useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      const res = await createAPIEndpoint(ENDPOINTS.survey).fetchById(19);
+      const res = await createAPIEndpoint(ENDPOINTS.survey).fetchById(29);
       setQns(res.data.Questions);
       setSur(res.data.Name);
-      console.log(res.data);
     };
 
     fetchData();
   }, []);
 
+  const handlePrevious = () => {
+    saveAnswer(qnIndex);
+    setQnIndex((prevIndex) => prevIndex - 1);
+  };
+  
+  const handleNext = () => {
+    saveAnswer(qnIndex);
+    setQnIndex((prevIndex) => prevIndex + 1);
+    console.log(qnIndex);
+  };
+
+  const handleAnswerClick = (questId, answerId) => {
+    const updatedQns = [...qns];
+    let TheQuestion = updatedQns.find(
+      a => a.QuestId === questId
+    );
+      TheQuestion = {
+      ...TheQuestion,
+      SelectedAnswer: answerId,
+    };
+    setQns(updatedQns);
+    setSelectedAnswer(answerId); // update selectedAnswer state
+  };
+
+  const saveAnswer = (index) => {
+    const updatedQns = [...qns];
+    updatedQns[index] = {
+      ...updatedQns[index],
+      SelectedAnswer: selectedAnswer,
+    };
+    setQns(updatedQns);
+  };
   return (
-
     <>
-    <h1 style={{textAlign: 'center'}}>{sur}</h1>
+      <Typography variant="h4" align="center" sx={{ mt: 2 }}>
+        {sur}
+      </Typography>
 
-        <Center>
-          <Card varient="outlined" sx={{ width: 900  }}>
-        <CardContent sx={{ textAlign: 'Center'}}>
-            <Typography variant="h4" sx={{ my: 3}}>
-            {qns[qnIndex].TheQuestion}
-            </Typography>
-            <Box sx={{
-            '& .MuiTextField-root':{
-                m: 1,
-                width: '90%'
-                
-            }
-            }}>
-            {qns.questions[qnIndex].Answers.map((answer) => (
-              <Button>{answer.TheAnswer}</Button>
-            ))}
-
-            </Box>
-        </CardContent>
-        <CardActions>
-          <Button>Previous</Button>
-          <Button style={{marginLeft: 'auto'}}>Next</Button>
+      <Center>
+        <Card variant="outlined" sx={{ width: '90vw', maxWidth: 900 }}>
+          {qns && qns.length > 0 && (
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ my: 3 }}>
+                {qns[qnIndex].TheQuestion}
+              </Typography>
+              <Grid container spacing={2} justifyContent="center">
+                {qns[qnIndex].Answers.map((answer) => (
+                  <Grid item key={answer.AnswerId}>
+                    <Button
+                      variant={qns[qnIndex].SelectedAnswer === answer.AnswerId || selectedAnswer === answer.AnswerId ? 'contained' : 'outlined'}
+                      onClick={() => handleAnswerClick(qns[qnIndex].QuestId, answer.AnswerId)}
+                    >
+                      {answer.TheAnswer}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </CardContent>
+          )}
+          <CardActions>
+            <Button onClick={handlePrevious} disabled={qnIndex === 0}>
+              Previous
+            </Button>
+            <Button onClick={handleNext} disabled={qnIndex === qns.length - 1} sx={{ marginLeft: 'auto' }}>
+            Next
+          </Button>
         </CardActions>
-    </Card>
-        </Center>
-
-</>
-
-  )
+      </Card>
+    </Center>
+  </>
+);
 }

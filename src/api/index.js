@@ -12,6 +12,7 @@ export const ENDPOINTS = {
     Login: 'User/login',
     Register: 'User/Register',
     Assign: 'User/Assign',
+    Unassign: 'User/Unassign',
 
 
 }

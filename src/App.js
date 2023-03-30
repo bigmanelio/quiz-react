@@ -10,6 +10,8 @@ import AdminHome from './api/admin/AdminHome';
 import StudentHome from './api/Student/StudentHome';
 import TakeSurvey from './api/Student/TakeSurvey';
 import Assign from './api/admin/Assign';
+import Grades from './api/Student/Grades';
+import CompletedWork from './api/admin/CompletedWork';
 
 function App() {
   return (
@@ -20,10 +22,12 @@ function App() {
           <Route path="/question" element={<Question />} />
           <Route path="/answer" element={<Answer />} />
           <Route path="admin/survey" element={<Survey />} />
+          <Route path="admin/completedwork/:id" element={<CompletedWork />} />
           <Route path="admin/assign" element={<Assign />} />
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/student" element={<StudentHome/>} />
           <Route path="/student/takesurvey/:id" element={<TakeSurvey/>} />
+          <Route path="/student/grades/:id" element={<Grades/>} />
           <Route path="/signup" element={<Signup />} />
            
       </Routes>

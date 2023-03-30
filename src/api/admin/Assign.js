@@ -17,6 +17,7 @@ import DeleteButton from "../../components/DeleteButton";
 import AdminNav from "../../components/AdminNav";
 import AssignButton from './AssignButton';
 import UnassignButton from './UnassignButton';
+import { Link } from 'react-router-dom';
 
 export default function Assign() {
   const [students, setStudents] = useState([]);
@@ -63,6 +64,7 @@ export default function Assign() {
     }
   }
 
+
   function AssignStudent(AccountId, SurveyId)
   {
     const myStudents = [...students];
@@ -85,6 +87,7 @@ export default function Assign() {
             <TableRow>
               <TableCell>AccountId</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell>Completed Work</TableCell>
               <TableCell>Assigned Work</TableCell>
               <TableCell>Assign Work</TableCell>
             </TableRow>
@@ -95,6 +98,7 @@ export default function Assign() {
                 <TableRow key={student.AccountId}>
                   <TableCell>{student.AccountId}</TableCell>
                   <TableCell>{student.FirstName + " " + student.LastName}</TableCell>
+                  <TableCell><Button color="error" component={Link} to={"/admin/completedwork/" + student.AccountId}>Completed Work</Button></TableCell>
                   <TableCell>{AssignedWork(student.AssignedWork, student.AccountId)}</TableCell>
                   <TableCell><AssignButton student={student} assignStudent={AssignStudent} surveys={surveys}/></TableCell>
                 </TableRow>

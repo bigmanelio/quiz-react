@@ -43,8 +43,8 @@ export default function Login() {
         if (validate()){
     
             var stuff = (JSON.stringify({
-                email: values.email,
-                password: values.password
+                Email: values.email,
+                Password: values.password
     
             }));
             console.log(stuff);
@@ -84,13 +84,13 @@ console.log(decoded);
 
     
 
-    const validate = ()=>{
-        let temp ={}
-        temp.email = (/\S+@\S+\.\S+/).test(values.email)?"":"Email is not valid."
-        temp.password = values.name!==""?"":"This field is required."
-        setErrors(temp)
-        return Object.values(temp).every(x=> x === "")
-    }
+const validate = () => {
+    let temp = {};
+    temp.email = /\S+@\S+\.\S+/.test(values.email) ? "" : "Email is not valid.";
+    temp.password = values.password !== "" ? "" : "This field is required.";
+    setErrors(temp);
+    return Object.values(temp).every((x) => x === "");
+  };
 
     return ( 
         <Center>

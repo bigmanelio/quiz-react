@@ -5,7 +5,7 @@ export default function StudentHome() {
   return (
     <>
     <StudentNav/>
-    <div>StudentHome</div>
+    <div>Student Home</div>
     </>
   )
 }

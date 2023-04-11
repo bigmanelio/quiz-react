@@ -12,6 +12,7 @@ import AddAnswerButton from './AddAnswerButton';
 import CheckTruth from './CheckTruth';
 import SetTruthButton from './SetTruthButton';
 import DeleteButton from './DeleteButton';
+import OptionalSelect from './OptionalSelect';
 
 
 function DropdownButton(props) {
@@ -42,6 +43,20 @@ function AddAnswer(id, answer, truth)
   props.addAnswer(props.QuestId, id, answer, truth);
 }
 
+function findQuestionById(id) {
+  for (let i = 0; i < props.questions.length; i++) {
+    if (props.questions[i].QuestId === id) {
+      return props.questions[i].TheQuestion;
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+
+}
+
   return (
     <>
     <div style={{ border: 'solid 1px red'}}>
@@ -67,6 +82,8 @@ function AddAnswer(id, answer, truth)
                     <><EditTextButton  updateThing={UpdateAnswer} content={thing.TheAnswer} table={"Answer"} fieldName={"TheAnswer"} id={thing.AnswerId}/><SetTruthButton answer={thing.TheAnswer} table={"answer"} id={thing.AnswerId} truth={thing.Truth} updateThing={UpdateTruth}/></>
 
                 </TableCell>
+                <TableCell>{findQuestionById(thing.NextQuestion)}</TableCell>
+                <TableCell><OptionalSelect question={props.questions} id={thing.AnswerId}/></TableCell>
                 <TableCell><DeleteButton table={'answer'} updateThing={DeleteAnswer} id={thing.AnswerId} /></TableCell>
               </TableRow>
             ))}

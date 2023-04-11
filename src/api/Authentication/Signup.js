@@ -24,6 +24,12 @@ export default function SignUp() {
         handleInputChange
     } = useForm(getFreshModel);
 
+    let navigate = useNavigate(); 
+    const routeChangeStudent = () =>{ 
+        let path = `../`; 
+        navigate(path);
+      }
+
     const SignUp = async e => {
         e.preventDefault();
         if (validate()){
@@ -103,10 +109,11 @@ export default function SignUp() {
                             variant="outlined" 
                             {...(errors.password &&{error:true, helperText:errors.password})}/>
                             <Button
+                            onClick={routeChangeStudent}
                             type="submit"
                             variant="contained"
                             size="large" 
-                            sx={{ width: '90%'}}>Start</Button>
+                            sx={{ width: '90%'}}>Sign up</Button>
                     </form>
                     </Box>
                 </CardContent>

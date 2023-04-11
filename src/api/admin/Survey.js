@@ -205,13 +205,13 @@ function UpdateAnswer(SurveyId, QuestId, id, answer, truth)
 
 
 
-function AddQuestion(SurveyId, QuestId, id, question, answer)
+function AddQuestion(SurveyId, QuestId, id, question, answer, optional)
 {
-  console.log(SurveyId, QuestId, id, question, answer)
 
   const newQuestion = {
     QuestId: QuestId,
     TheQuestion: question,
+    Optional: optional,
     Answers: [
       {
         AnswerId: id,

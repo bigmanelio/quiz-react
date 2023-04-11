@@ -29,7 +29,8 @@ function AddQuestionButton(props) {
       console.log(data);
       const res = await createAPIEndpoint(props.table).post(data);
       const stuff = JSON.parse(res.data);
-      props.updateThing(stuff.parentId, stuff.childId, text, 'Edit Default Answer');
+
+      props.updateThing(stuff.parentId, stuff.childId, text, 'Edit Default Answer', props.optional);
       handleButtonClick();
     } catch (error) {
       console.log(error);
@@ -50,7 +51,7 @@ function AddQuestionButton(props) {
       )}
       <TableRow>
         <TableCell>
-            <Button onClick={handleButtonClick}>Add Question</Button>
+            <Button onClick={handleButtonClick}>Add {props.table}</Button>
         </TableCell>
         <TableCell></TableCell>
       </TableRow>

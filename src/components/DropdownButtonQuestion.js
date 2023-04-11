@@ -40,15 +40,18 @@ function DeleteAnswer(QuestId, id)
 }
 
 
-function AddQuestion(QuestId, id, question, answer)
+function AddQuestion(QuestId, id, question, answer, optional)
 {
-  props.AddQuestion(props.SurveyId, QuestId, id, question, answer);
+  props.AddQuestion(props.SurveyId, QuestId, id, question, answer, optional);
 };
 
 function AddAnswer(QuestId, id, answer, truth)
 {
   props.addAnswer(props.SurveyId, QuestId, id, answer, truth);
 };
+
+
+
 
 
 
@@ -73,21 +76,39 @@ function AddAnswer(QuestId, id, answer, truth)
           </TableHead>
           <TableBody>
             {props.content.map((thing) => (
+
+              thing.Optional !== 1 && (
               <TableRow
                 key={thing.QuestId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell><EditTextButton  updateThing={UpdateQuestion} content={thing.TheQuestion} table={"Question"} fieldName={"TheQuestion"} id={thing.QuestId}/></TableCell>
                 
-                <TableCell><DropdownButton deleteAnswer={DeleteAnswer} updateThing={UpdateAnswer} updateTruth={UpdateTruth} addAnswer={AddAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
+                <TableCell><DropdownButton questions={props.content} deleteAnswer={DeleteAnswer} updateThing={UpdateAnswer} updateTruth={UpdateTruth} addAnswer={AddAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
                 
                 <TableCell><DeleteButton table={'question'} id={thing.QuestId} updateThing={DeleteQuestion}/></TableCell>
               </TableRow>
-
+              )
             ))}
 
-            <AddQuestionButton updateThing={AddQuestion} table={"question"} id={props.SurveyId}/>
+            <AddQuestionButton optional={0} updateThing={AddQuestion} table={"question"} id={props.SurveyId}/>
+            <AddQuestionButton optional={1} updateThing={AddQuestion} table={"question/optional"} id={props.SurveyId}/>
+            
+            {props.content.map((thing) => (
 
+              thing.Optional !== 0 && (
+              <TableRow
+                key={thing.QuestId}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell><EditTextButton  updateThing={UpdateQuestion} content={thing.TheQuestion} table={"Question"} fieldName={"TheQuestion"} id={thing.QuestId}/></TableCell>
+                
+                <TableCell><DropdownButton questions={props.content} deleteAnswer={DeleteAnswer} updateThing={UpdateAnswer} updateTruth={UpdateTruth} addAnswer={AddAnswer} QuestId={thing.QuestId} title="Answers" content={thing.Answers}/></TableCell>
+                
+                <TableCell><DeleteButton table={'question'} id={thing.QuestId} updateThing={DeleteQuestion}/></TableCell>
+              </TableRow>
+              )
+            ))}
 
           </TableBody>
         </Table>

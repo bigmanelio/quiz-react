@@ -5,6 +5,7 @@ export const BASE_URL = 'http://localhost:5066/'
 export const ENDPOINTS = {
     answer: 'answer',
     question: 'question',
+    optional: 'question/optional',
     survey: 'survey',
     user: 'user',
     
@@ -14,6 +15,7 @@ export const ENDPOINTS = {
     Assign: 'User/Assign',
     Unassign: 'User/Unassign',
     Response: 'Response',
+    NextQuestion: 'Answer/NextQuestion',
 
 
 }

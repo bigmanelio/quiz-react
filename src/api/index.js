@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     optional: 'question/optional',
     survey: 'survey',
     user: 'user',
+
     
     truth: 'answer/truth',
     Login: 'User/login',
@@ -15,6 +16,7 @@ export const ENDPOINTS = {
     Assign: 'User/Assign',
     Unassign: 'User/Unassign',
     Response: 'Response',
+    Grade: 'Response/Grade',
     NextQuestion: 'Answer/NextQuestion',
 
 

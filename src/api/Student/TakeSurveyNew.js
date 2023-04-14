@@ -5,9 +5,8 @@ import StudentNav from '../../components/StudentNav';
 import Center from '../../components/Center';
 import { useParams } from 'react-router-dom';
 
-export default function TakeSurvey() {
+export default function TakeSurveyNew() {
   const [qns, setQns] = useState([]);
-  const [optional, setOptional] = useState([]);
   const [qnIndex, setQnIndex] = useState(0);
   const [sur, setSur] = useState('');
   const [surId, setSurId] = useState(0);
@@ -21,13 +20,7 @@ export default function TakeSurvey() {
         ...question,
         selectedAnswer: 0
       }));
-      console.log(questions);
-
-      const optionalQuestions = questions.filter((question) => question.Optional === 1);
-      const nonOptionalQuestions = questions.filter((question) => question.Optional !== 1);
-      setQns(nonOptionalQuestions);
-      setOptional(optionalQuestions);
-
+      setQns(questions);
       setSur(res.data.Name);
       setSurId(res.data.SurveyId);
     };

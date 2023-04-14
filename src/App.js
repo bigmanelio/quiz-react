@@ -9,6 +9,7 @@ import Survey from './api/admin/Survey';
 import AdminHome from './api/admin/AdminHome';
 import StudentHome from './api/Student/StudentHome';
 import TakeSurvey from './api/Student/TakeSurvey';
+import TakeSurveyNew from './api/Student/TakeSurveyNew';
 import Assign from './api/admin/Assign';
 import Grades from './api/Student/Grades';
 import CompletedWork from './api/admin/CompletedWork';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin" element={<AdminHome />} />
           <Route path="/student" element={<StudentHome/>} />
           <Route path="/student/takesurvey/:id" element={<TakeSurvey/>} />
+          <Route path="/student/takesurveynew/:id" element={<TakeSurveyNew/>} />
           <Route path="/student/grades/" element={<Grades/>} />
           <Route path="/signup" element={<Signup />} />
            

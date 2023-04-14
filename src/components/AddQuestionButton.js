@@ -54,6 +54,7 @@ function AddQuestionButton(props) {
             <Button onClick={handleButtonClick}>Add {props.table}</Button>
         </TableCell>
         <TableCell></TableCell>
+        <TableCell></TableCell>
       </TableRow>
       
     </>

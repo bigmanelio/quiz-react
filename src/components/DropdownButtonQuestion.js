@@ -90,7 +90,7 @@ function AddAnswer(QuestId, id, answer, truth)
               </TableRow>
               )
             ))}
-
+            
             <AddQuestionButton optional={0} updateThing={AddQuestion} table={"question"} id={props.SurveyId}/>
             <AddQuestionButton optional={1} updateThing={AddQuestion} table={"question/optional"} id={props.SurveyId}/>
             

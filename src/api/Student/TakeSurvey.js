@@ -11,6 +11,7 @@ export default function TakeSurvey() {
   const [qnIndex, setQnIndex] = useState(0);
   const [sur, setSur] = useState('');
   const [surId, setSurId] = useState(0);
+  const [continued, setContinued] = useState(false);
   const params = useParams();
   const surveyId = params.id;
 
@@ -42,6 +43,30 @@ export default function TakeSurvey() {
       questId: question.QuestId,
       selectedAnswer: question.selectedAnswer
     }));
+  }
+
+  function Continued()
+  {
+    qns.map(question => {
+      question.Answers.map(answer => {
+        
+        if(question.selectedAnswer === answer.AnswerId)
+        {
+          if(answer.NextQuestion !== 0)
+          {
+            optional.map((option) => {
+              if(option.QuestId === answer.NextQuestion)
+              {
+                console.log(option);
+                setQns([...qns, option]);
+                setQnIndex((prevIndex) => prevIndex + 1);
+              }
+            })
+          }
+        }
+      })
+    })
+    setContinued(true);
   }
 
   async function handleSubmit() {
@@ -127,9 +152,9 @@ export default function TakeSurvey() {
               </Button>
             )}
             {hasSelectedAnswerForAllQns && (
-              <Button onClick={handleSubmit} variant="contained" color="primary" sx={{}}>
-                Submit
-              </Button>
+          <Button onClick={continued ? handleSubmit : Continued} variant="contained" color="primary" sx={{}}>
+          {continued ? 'Submit' : 'Continue'}
+        </Button>
             )}
           </CardActions>
         </Card>

@@ -27,6 +27,10 @@ export default function Login() {
         let path = `./student`; 
         navigate(path);
       }
+      const routeChangeForgotPassword = () =>{ 
+        let path = `./forgot`; 
+        navigate(path);
+      }
 
     
 
@@ -135,6 +139,15 @@ const validate = () => {
                             sx={{ 
                                 marginTop: '5px',
                                 width: '90%'}}>Sign Up</Button>
+
+                    <Button
+                            onClick={routeChangeForgotPassword}
+                            type="submit"
+                            variant="contained"
+                            size="large" 
+                            sx={{ 
+                                marginTop: '5px',
+                                width: '90%'}}>Forgot Password</Button>
                     </Box>
                 </CardContent>
             </Card>

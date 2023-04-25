@@ -21,7 +21,7 @@ export default function Grades() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await createAPIEndpoint(ENDPOINTS.user).fetchById(localStorage.getItem('id'));
+      const res = await createAPIEndpoint(ENDPOINTS.ForGrade).fetchById(localStorage.getItem('id'));
       console.log(res.data);
       setSurs(res.data);
     };

@@ -13,6 +13,8 @@ import TakeSurveyNew from './api/Student/TakeSurveyNew';
 import Assign from './api/admin/Assign';
 import Grades from './api/Student/Grades';
 import CompletedWork from './api/admin/CompletedWork';
+import ForgotPassword from './api/Authentication/ForgotPassword';
+import ChangePassword from './api/Authentication/ChangePassword';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="admin/completedwork/:id" element={<CompletedWork />} />
           <Route path="admin/assign" element={<Assign />} />
           <Route path="/admin" element={<AdminHome />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/forgot/change" element={<ChangePassword/>} />
           <Route path="/student" element={<StudentHome/>} />
           <Route path="/student/takesurvey/:id" element={<TakeSurvey/>} />
           <Route path="/student/takesurveynew/:id" element={<TakeSurveyNew/>} />

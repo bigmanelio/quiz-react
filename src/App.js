@@ -15,6 +15,7 @@ import Grades from './api/Student/Grades';
 import CompletedWork from './api/admin/CompletedWork';
 import ForgotPassword from './api/Authentication/ForgotPassword';
 import ChangePassword from './api/Authentication/ChangePassword';
+import Training from './api/admin/Training';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/question" element={<Question />} />
           <Route path="/answer" element={<Answer />} />
           <Route path="admin/survey" element={<Survey />} />
+          <Route path="admin/survey/Training/:id" element={<Training />} />
           <Route path="admin/completedwork/:id" element={<CompletedWork />} />
           <Route path="admin/assign" element={<Assign />} />
           <Route path="/admin" element={<AdminHome />} />

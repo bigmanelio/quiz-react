@@ -22,8 +22,8 @@ export default withAuthorization('Admin')(function GetSurvey() {
   const [surs, setSurs] = useState({ surveys: [] });
 
   let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    let path = `./create`; 
+  function routeChange(surveyId){ 
+    let path = `./Training/` + surveyId + `/`; 
     navigate(path);
   }
 
@@ -284,6 +284,7 @@ catch (error) {
             <TableRow>
               <TableCell>SurveyId</TableCell>
               <TableCell>SurveyName</TableCell>
+              <TableCell>Training</TableCell>
               <TableCell>Question</TableCell>
               <TableCell>Delete</TableCell>
             </TableRow>
@@ -300,6 +301,7 @@ catch (error) {
                 <TableCell align="left">
                 <EditTextButton updateThing={UpdateSurvey} content={survey.Name} id={survey.SurveyId} table={"Survey"} fieldName={"Name"}/>
                 </TableCell>
+                <TableCell><Button color="error" onClick={() => routeChange(survey.SurveyId)}>Training</Button></TableCell>
                 <TableCell>
                 
                 <DropdownButtonQuestion title="Questions" SurveyId={survey.SurveyId} deleteQuestion={DeleteQuestion} deleteAnswer={DeleteAnswer} updateThing={UpdateQuestion} updateTruth={UpdateAnswer} updateThing2={UpdateAnswer} AddQuestion={AddQuestion} addAnswer={AddAnswer} content={

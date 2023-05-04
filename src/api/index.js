@@ -12,7 +12,7 @@ export const ENDPOINTS = {
 
     ForGrade: 'user/forgrade',
 
-    
+    training: 'survey/training',
     truth: 'answer/truth',
     Login: 'User/login',
     Register: 'User/Register',

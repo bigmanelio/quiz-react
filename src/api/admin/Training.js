@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {Button} from '@mui/material';
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
 import { useParams } from 'react-router-dom';
+import Center from '../../components/Center';
 
 export default function Training() {
   const [content, setContent] = useState('');
@@ -15,6 +16,18 @@ export default function Training() {
     console.log(content);
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await createAPIEndpoint(ENDPOINTS.training).fetchById(surveyId);
+      console.log(res.data)
+      setContent(res.data);
+
+
+    };
+
+    fetchData();
+  }, []);
+
   async function handleSubmit() {
     try {
   
@@ -23,8 +36,9 @@ export default function Training() {
         Data: content
   
       }));
-  
-      console.log(data);
+      
+      const res = await createAPIEndpoint(ENDPOINTS.training).post(data);
+      console.log(res);
 
     } catch (error) {
       console.log(error);
@@ -33,6 +47,7 @@ export default function Training() {
 
   return (
     <>
+    <Center>
 <ReactQuill
         id="editor"
         value={content}
@@ -58,6 +73,7 @@ export default function Training() {
         ]}
       />
       <Button onClick={handleSubmit}>Submit</Button>
+      </Center>
       </>
   );
 }

@@ -66,7 +66,7 @@ async function handleSubmit(accountId, surveyId) {
             {filterSurveys().map((thing) => (
               <TableRow
                 key={thing.SurveyId}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+
               >
                 <TableCell>
                     <>{thing.Name}</>

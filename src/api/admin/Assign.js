@@ -40,43 +40,34 @@ export default function Assign() {
   }, []);
 
   function Unassign(AccountId, SurveyId) {
-    const myStudents = [...students];
-    const TheStudent = myStudents.find(a => a.AccountId === AccountId);
+
+    const theStudent = students.find(a => a.AccountId === AccountId);
   
-    TheStudent.AssignedWork = TheStudent.AssignedWork.filter(item => item !== SurveyId);
-    setStudents(myStudents);
+    theStudent.AssignedWork = theStudent.AssignedWork.filter(item => item !== SurveyId);
+    setStudents([...students]);
   }
 
-  function AssignedWork(ids, accountId) {
-    if (Array.isArray(ids)) {
-      const foundSurveys = ids.map((surveyId) =>
-        surveys.filter((survey) => survey.SurveyId === surveyId)
-      );
-      return foundSurveys.map((surveyArray) =>
-        surveyArray.map((survey) =>  <p key={survey.SurveyId}>{survey.Name} <UnassignButton accountId={accountId} unassign={Unassign} surveyId={survey.SurveyId} /></p> )
-      );
-    } else {
-      const foundSurveys = surveys.filter((survey) => survey.SurveyId === ids);
-      if (foundSurveys.length > 0) {
-        return foundSurveys.map((survey) => <> <p key={survey.SurveyId}>{survey.Name}</p> <DeleteButton/></>);
-      }
-      return null;
-    }
+  function AssignedWork(surveyIds, accountId) {
+
+    const foundSurveys = surveys.filter((survey) => surveyIds.indexOf(survey.SurveyId) > -1);
+    console.log(surveyIds, accountId, foundSurveys);
+    return foundSurveys.map((survey) => (
+      <p key={survey.SurveyId}>{survey.Name} <UnassignButton accountId={accountId} unassign={Unassign} surveyId={survey.SurveyId} /></p> )
+    );
   }
 
 
   function AssignStudent(AccountId, SurveyId)
   {
-    const myStudents = [...students];
-    const TheStudent = myStudents.find(
+    const theStudent = students.find(
       a => a.AccountId === AccountId
     );
 
-    TheStudent.AssignedWork.push(SurveyId);
-
-    console.log(TheStudent);
-    setStudents(myStudents);
+    theStudent.AssignedWork.push(SurveyId);
+    setStudents([...students]);
   }
+
+
 
   return (
     <>

@@ -10,37 +10,36 @@ import Button from '@mui/material/Button';
 import DeleteButton from '../../components/DeleteButton';
 
 import { createAPIEndpoint, ENDPOINTS } from '../../api';
-import { Margin } from '@mui/icons-material';
 
 
 
 
-export default function AssignButton(props) {
+export default function AssignLessonButton(props) {
 
 const [x, setX] = useState(0);
 
 
-function filterSurveys() {
-  const foundSurveys = props.surveys.filter(
-    (survey) => !props.student.AssignedWork.includes(survey.SurveyId)
+function filterLessons() {
+  const foundLessons = props.lessons.filter(
+    (lesson) => !props.student.AssignedLessons.includes(lesson.LessonId)
   );
 
 
-  return(foundSurveys);
+  return(foundLessons);
 }
 
-async function handleSubmit(accountId, surveyId) {
+async function handleSubmit(accountId, lessonId) {
   try {
   
     var data = (JSON.stringify({
        AccountId: accountId,
-       SurveyId: surveyId,
+       LessonId: lessonId,
      }));
  
      console.log(data);
      const res = await createAPIEndpoint(ENDPOINTS.Assign).post(data);
      console.log(res.data);
-     props.assignStudent(accountId, surveyId)
+     props.assignStudent(accountId, lessonId)
    } catch (error) {
      console.log(error);
    }
@@ -49,8 +48,8 @@ async function handleSubmit(accountId, surveyId) {
 
   return (
     <>
-        <div style={{ border: 'solid 1px red', marginBottom: '50px'}}>
-        <Button color="error" onClick={() => setX(x + 1)}>Assign Surveys</Button>
+        <div style={{ border: 'solid 1px red'}}>
+        <Button color="error" onClick={() => setX(x + 1)}>Assign Lessons</Button>
 
         {(x % 2 === 0)
         ? props.content 
@@ -64,9 +63,9 @@ async function handleSubmit(accountId, surveyId) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filterSurveys().map((thing) => (
+            {filterLessons().map((thing) => (
               <TableRow
-                key={thing.SurveyId}
+                key={thing.LessonId}
 
               >
                 <TableCell>
@@ -74,7 +73,7 @@ async function handleSubmit(accountId, surveyId) {
 
                 </TableCell>
                 <TableCell>  
-                  <Button color="error" onClick={() => handleSubmit(props.student.AccountId, thing.SurveyId)}>
+                  <Button color="error" onClick={() => handleSubmit(props.student.AccountId, thing.LessonId)}>
                     Assign to Student
                   </Button>
                 </TableCell>

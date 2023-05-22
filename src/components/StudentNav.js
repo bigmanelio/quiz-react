@@ -41,7 +41,7 @@ export default function AdminNav() {
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <div>
           <IconButton color="inherit" aria-label="menu">
-            Cardinal and White Health
+            Cardinal and White Academy
           </IconButton>
         </div>
         <div sx={{ display: 'flex', alignItems: 'center' }}>

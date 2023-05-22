@@ -16,6 +16,7 @@ import withAuthorization from "../Authentication/withAuthorization";
 import DeleteButton from "../../components/DeleteButton";
 import AdminNav from "../../components/AdminNav";
 import AssignButton from './AssignButton';
+import AssignLessonButton from './AssignLessonButton';
 import UnassignButton from './UnassignButton';
 import { Link } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ export default function Assign() {
   const [students, setStudents] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [surveys, setSurveys] = useState([]);
+  const [lessons, setLessons] = useState([]);
 
   useEffect(() => {
     async function getUsers() {
@@ -31,6 +33,7 @@ export default function Assign() {
         console.log(res.data);
         setStudents(res.data.Students);
         setAdmins(res.data.Admins);
+        setLessons(res.data.Lessons);
         setSurveys(res.data.Surveys)
       } catch (error) {
         console.log(error);
@@ -79,7 +82,8 @@ export default function Assign() {
               <TableCell>AccountId</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Completed Work</TableCell>
-              <TableCell>Assigned Work</TableCell>
+              <TableCell>Assigned Surveys</TableCell>
+              <TableCell>Assigned Lessons</TableCell>
               <TableCell>Assign Work</TableCell>
             </TableRow>
           </TableHead>
@@ -91,7 +95,9 @@ export default function Assign() {
                   <TableCell>{student.FirstName + " " + student.LastName}</TableCell>
                   <TableCell><Button color="error" component={Link} to={"/admin/completedwork/" + student.AccountId}>Completed Work</Button></TableCell>
                   <TableCell>{AssignedWork(student.AssignedWork, student.AccountId)}</TableCell>
-                  <TableCell><AssignButton student={student} assignStudent={AssignStudent} surveys={surveys}/></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell><AssignButton student={student} assignStudent={AssignStudent} surveys={surveys}/>
+                             <AssignLessonButton student={student} lessons={lessons}/></TableCell>
                 </TableRow>
               ))}
             </TableBody>

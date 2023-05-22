@@ -101,7 +101,7 @@ const validate = () => {
             <Card sx={{ width: 400 }}>
                 <CardContent sx={{ textAlign: 'Center'}}>
                     <Typography variant="h3" sx={{ my: 3}}>
-                        Cardinal & White Health
+                        Cardinal & White Academy
                     </Typography>
                     <Box sx={{
                     '& .MuiTextField-root':{

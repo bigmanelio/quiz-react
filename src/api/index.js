@@ -7,6 +7,7 @@ export const ENDPOINTS = {
     question: 'question',
     optional: 'question/optional',
     survey: 'survey',
+    lesson: 'lesson',
     user: 'user',
     sms: 'Sms',
 

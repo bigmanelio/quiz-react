@@ -13,6 +13,7 @@ export default function AdminNav() {
         <div>
       <AppBar position="static">
         <Toolbar>
+        <Button color="inherit" component={Link} to="/admin/lesson">Edit Lesson</Button>
           <Button color="inherit" component={Link} to="/admin/survey">Edit Survey</Button>
           <Button color="inherit" component={Link} to="/admin/assign">Assign Surveys</Button> 
           <Button style={{marginLeft: 'auto'}}color="inherit" component={Link} to="">{localStorage.getItem("name")}</Button>
